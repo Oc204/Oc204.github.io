@@ -6,27 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>使用阿里云服务器配置Jenkins小记 | Oc204</title>
+  <title>linux 命令小记 | Oc204</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="闲谈">
+  <meta name="keywords" content="闲聊">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用阿里云服务器配置Jenkins小记">
-<meta property="og:url" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/index.html">
+<meta property="og:title" content="linux 命令小记">
+<meta property="og:url" content="http://yoursite.com/2018/09/22/linux-instruction/index.html">
 <meta property="og:site_name" content="Oc204">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/jenkins3.jpg">
-<meta property="og:image" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/linux_version.png">
-<meta property="og:image" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/jdk.png">
-<meta property="og:image" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/jdk_sucess.png">
-<meta property="og:image" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/tomcat.png">
-<meta property="og:image" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/tomcat_start.png">
-<meta property="og:image" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/tomcat_startup.png">
-<meta property="og:image" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/jenkins_start.png">
-<meta property="og:image" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/ali_firewall.png">
-<meta property="og:updated_time" content="2018-09-22T12:59:01.150Z">
+<meta property="og:image" content="http://yoursite.com/2018/09/22/linux-instruction/linux.png">
+<meta property="og:updated_time" content="2018-09-22T13:22:03.946Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用阿里云服务器配置Jenkins小记">
-<meta name="twitter:image" content="http://yoursite.com/2018/09/22/server-configuration-of-jenkins/jenkins3.jpg">
+<meta name="twitter:title" content="linux 命令小记">
+<meta name="twitter:image" content="http://yoursite.com/2018/09/22/linux-instruction/linux.png">
   
     <link rel="alternative" href="/atom.xml" title="Oc204" type="application/atom+xml">
   
@@ -152,36 +144,41 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-server-configuration-of-jenkins" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-linux-instruction" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      使用阿里云服务器配置Jenkins小记
+      linux 命令小记
     </h1>
   
 
         
-        <a href="/2018/09/22/server-configuration-of-jenkins/" class="archive-article-date">
-  	<time datetime="2018-09-22T08:23:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-22</time>
+        <a href="/2018/09/22/linux-instruction/" class="archive-article-date">
+  	<time datetime="2018-09-22T12:43:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-22</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/2018/09/22/server-configuration-of-jenkins/jenkins3.jpg" alt=""></p>
+        <p><img src="/2018/09/22/linux-instruction/linux.png" alt=""></p>
 <a id="more"></a>
-<h2 id="一、Jenkins是什么"><a href="#一、Jenkins是什么" class="headerlink" title="一、Jenkins是什么"></a>一、Jenkins是什么<br></h2><p>   Jenkins是一个功能强大的应用程序，允许持续集成和持续交付项目，无论用的是什么平台。<br>   这是一个免费的源代码，可以处理任何类型的构建或持续集成。集成Jenkins可以用于一些测试和部署技术。  </p>
-<h2 id="二、安装Jenkins的步骤"><a href="#二、安装Jenkins的步骤" class="headerlink" title="二、安装Jenkins的步骤"></a>二、安装Jenkins的步骤<br></h2><p>  在安装Jenkins之前，我们需要配置好Jenkins的运行环境和一些参数变量。<br>  所以从开始直至Jenkins安装完毕，这个过程可以分为三大步骤<br>  1、安装对应版本的JDK<br>  2、安装对应版本的Tomcat<br>  3、安装Jenkins</p>
-  <h4>1、安装JDK</h4><br>  首先查看服务器的信息，是64位还是32位系统的 命令： <code>uname -a</code> ，可以看到我的linux是64位的<br>  <img src="/2018/09/22/server-configuration-of-jenkins/linux_version.png" alt="linux-version">    <br><br>  然后到官网下载对应版本的JDK，由上面的命令我们查到系统为64位的，所以我们就下载对应的linux64位版本的<br>  <img src="/2018/09/22/server-configuration-of-jenkins/jdk.png" alt="linux64的JDK"><br><br>  下载完毕，将目录切换到 usr，然后新建一个文件夹，我这里命名为 myJDK，然后进入 myJDK。<br>  <code>cd /usr  , mkdir myJDK ,cd myJDK</code><br>  然后用xftp（不懂xftp是什么的自己百度）把刚刚下好的压缩包复制过来，然后解压。<br>  <code>tar -zxvf [filename]</code><br>  解压完毕，然后进行JDK的配置<br><br>  输入命令 <code>vim /etc/profile</code>，进入配置文件界面（内置使用的是vim编辑器，不会用的去百度）<br>  在文件最前面添加如下内容：<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/myJDK/jdk1.8.0_161  </span><br><span class="line">export JRE_HOME=$&#123;JAVA_HOME&#125;/jre  </span><br><span class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib </span><br><span class="line">export  PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br></pre></td></tr></table></figure><br><br>  添加完成的时候再再输入命令 <code>source/etc/profile</code> 保存一下配置文件的修改<br>  大致流程和在windows上配置差不多的，然后同样，检查一下安装是否成功  <code>java -version</code>，提示如下说明成功<br>  <img src="/2018/09/22/server-configuration-of-jenkins/jdk_sucess.png" alt="JDK配置成功输出的版本信息"><br><br>  <h4>2、安装Tomcat </h4> 
+<h2 id="本文背景"><a href="#本文背景" class="headerlink" title="本文背景"></a>本文背景</h2><blockquote>
+<p><font face="楷体" size="4"><br>    前几天买了个阿里的学生机，之前也完全没有接触过服务器，然后就完全是个小白这样。<br>    但是经过几天的折腾，也渐渐熟悉了以命令行形式的操作。感觉还挺有意思的，也没有想象中这么难</font></p>
+</blockquote>
+<h2 id=""><a href="#" class="headerlink" title="  "></a>  </h2><h3>linux基本命令</h3> 
 
-<p>  百度tomcat，来到官网找对应版本<br>  这里我安装的是Tomcat8，选择这个版本<br>  <img src="/2018/09/22/server-configuration-of-jenkins/tomcat.png" alt="选择tomcat版本"><br><br>  然后惯例，在 usr目录下新建一个文件夹,我直接命名为tomcat，把压缩包从本地复制到服务器的这个文件夹中，解压<br>  新版tomcat是不用配置环境变量的，所以解压完毕就可以直接启动tomcat服务了。<br>  运行如下命令  <code>cd [解压完成的tomcat目录]</code>,<code>cd bin</code>,运行启动文件 <code>./startup.sh</code><br>  然后会看到窗口中有这些信息输出，说明运行没有问题<br>  <img src="/2018/09/22/server-configuration-of-jenkins/tomcat_start.png" alt="运行startup文件的提示信息"><br>  可能需要稍等一下，tomcat启动还是需要点时间的。<br>  访问一下，公网地址：8080(tomcat默认端口)，出现如下界面表示成功<br>  <img src="/2018/09/22/server-configuration-of-jenkins/tomcat_startup.png" alt="运行tomcat成功的界面"></p>
-<p>  </p><h4>3、安装Jenkins</h4><br>  百度Jenkins，到官网直接下载<br>  usr目录下新建 jenkins文件夹，复制文件到该文件夹内，解压，具体操作如上不啰嗦<br>  然后进入解压目录，输入命令 <code>java -jar jenkin.war</code>。<br>  等待jenkins运行的信息显示完毕，浏览器输入 公网地址：8080,看到以下页面表示安装成功。<br>  <img src="/2018/09/22/server-configuration-of-jenkins/jenkins_start.png" alt="jenkins主界面"><br>  安装成功后，Jenkins还需要在页面上进行一系列的配置，篇幅有限，就不说了。 <p></p>
-<p></p><h2> 三、我遇到的坑</h2> <p></p>
-<p></p><h4>tomcat无法启动</h4><br>    首先是输入8080端口无效，网页显示连接失败。然后查看了一下端口占用情况，以为是端口问题，然后修改了端口号为8081，再次进行启动，发现没有用。<br>    然后百度了一下，说是需要到阿里云控制台配置防火墙端口，如下<br>    <img src="/2018/09/22/server-configuration-of-jenkins/ali_firewall.png" alt="阿里云轻量服务器防火墙端口号配置"><br>    然后再次访问就OK了。<br>    吐槽一下，这个问题困扰了我起码有3天！！！<p></p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd [filename]          //进入某一文件夹</span><br><span class="line">cd ..                  //返回上一层文件</span><br><span class="line">cd ~                   //返回根目录</span><br><span class="line">mkdir [filename]       //创建名为 ‘filename‘的文件夹</span><br><span class="line">tar -zxvf [filename]   //解压后缀为.tar.gz的压缩包</span><br><span class="line">ls -la                 //查看当前目录下的所有文件</span><br><span class="line">rz                     //从本地上传文件至当前文件夹</span><br><span class="line">rm -rf [filename]      //删除 &apos;filename&apos;文件及其所有子文件</span><br></pre></td></tr></table></figure>
+</code></pre><h3>vim 的基本命令</h3>
+
+<p>   <code>vim [filename]        //对可编辑文件&#39;filename&#39;进行编辑</code></p>
+<p>   进入vim编辑模式后，输入i进入编辑模式，左下方会有 ‘INSERT’ 关键字提示;<br>   编辑完成后，按 ‘esc’ 退出编辑模式，然后输入 ‘:’ 进入保存选项，输入命令:<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> q!                //表示不保存修改并提交</span><br><span class="line">wq                 //表示保存修稿并提交</span><br></pre></td></tr></table></figure></p>
+<p>   <br></p>
+<h4>在今后的学习中将会继续完善…</h4>
+
 
       
 
@@ -216,7 +213,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">闲谈</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">闲聊</a>
         		</li>
       		
 		</ul>
@@ -272,7 +269,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/09/22/server-configuration-of-jenkins/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/09/22/linux-instruction/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -286,18 +283,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/09/22/linux-instruction/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          linux 命令小记
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/07/13/my-first-blog/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">博客搭成小记</div>
+    <a href="/2018/09/22/server-configuration-of-jenkins/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用阿里云服务器配置Jenkins小记</div>
       <i class="icon-circle-right"></i>
     </a>
   
