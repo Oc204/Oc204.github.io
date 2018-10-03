@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Oc204">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/09/22/linux-instruction/linux.png">
-<meta property="og:updated_time" content="2018-09-26T14:48:27.750Z">
+<meta property="og:updated_time" content="2018-10-03T06:34:33.132Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 命令小记">
 <meta name="twitter:image" content="http://yoursite.com/2018/09/22/linux-instruction/linux.png">
@@ -172,6 +172,8 @@
 <h2 id=""><a href="#" class="headerlink" title="  "></a>  </h2><h3>linux基本命令</h3> 
 
 <pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd [filename]          //进入某一文件夹</span><br><span class="line">cd ..                  //返回上一层文件</span><br><span class="line">cd ~                   //返回根目录</span><br><span class="line">mkdir [filename]       //创建名为 ‘filename‘的文件夹</span><br><span class="line">tar -zxvf [filename]   //解压后缀为.tar.gz的压缩包</span><br><span class="line">ls -la                 //查看当前目录下的所有文件</span><br><span class="line">rz                     //从本地上传文件至当前文件夹</span><br><span class="line">rm -rf [filename]      //删除 &apos;filename&apos;文件及其所有子文件</span><br></pre></td></tr></table></figure>
+</code></pre><p><br></p><h3>linux中.sh文件提示权限不够和无效问题</h3><p></p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">step_01: vi filename.sh 进入文件编辑模式</span><br><span class="line">step_02: 进入编辑模式输入命令 set ff 查看.sh文件的格式，如果出现文件格式为dos则需要修格式，输入 set fileformat=unix</span><br><span class="line">         因为linux系统下只认unix格式的.sh。修改完毕，保存返回。以此可再次查看格式是否修改成功</span><br><span class="line">step_03: 在.sh文件的父目录下执行命令 chmod u+x filename.sh 给予.sh文件权限</span><br></pre></td></tr></table></figure>
 </code></pre><h3>vim 的基本命令</h3>
 
 <p>   <code>vim [filename]        //对可编辑文件&#39;filename&#39;进行编辑</code></p>
@@ -416,15 +418,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">jenkins系列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">学习小记</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">闲谈</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">jenkins系列</a>
               </li>
             
             <div class="clearfix"></div>
