@@ -6,15 +6,28 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Oc204</title>
+  <title>jenkins发布一个项目 | Oc204</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Oc204">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="keywords" content="jenkins系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jenkins发布一个项目">
+<meta property="og:url" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/index.html">
 <meta property="og:site_name" content="Oc204">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/head.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/step01.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/step02.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/step03.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/step04.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/step05.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/step06.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/step07.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/step08.png">
+<meta property="og:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/step09.png">
+<meta property="og:updated_time" content="2018-10-03T05:38:50.615Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Oc204">
+<meta name="twitter:title" content="jenkins发布一个项目">
+<meta name="twitter:image" content="http://yoursite.com/2018/10/03/jenkins发布一个项目/head.png">
   
     <link rel="alternative" href="/atom.xml" title="Oc204" type="application/atom+xml">
   
@@ -140,16 +153,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-jenkins发布一个项目" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-jenkins发布一个项目" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/03/jenkins发布一个项目/">jenkins发布一个项目</a>
+    <h1 class="article-title" itemprop="name">
+      jenkins发布一个项目
     </h1>
   
 
@@ -163,11 +174,44 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><img src="/2018/10/03/jenkins发布一个项目/head.png" alt=""></p>
-        
-          <a class="article-more-a" href="/2018/10/03/jenkins发布一个项目/#more">more >></a>
-        
+<a id="more"></a>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p><font face="楷体" size="4"><br>    发布项目是在配置完其他环境变量、邮件服务还有git的秘钥之后才能执行的，缺一不可。</font></p>
+</blockquote>
+<h2 id=""><a href="#" class="headerlink" title="  "></a>  </h2><h2 id="一、为什么要使用jenkins来发布项目？"><a href="#一、为什么要使用jenkins来发布项目？" class="headerlink" title="一、为什么要使用jenkins来发布项目？"></a>一、为什么要使用jenkins来发布项目？</h2><p>   jenkins是一个自动化的代码集成及发布的工具，即它能实现测试、打包和通过执行shell脚本实现发布。<br>   我们只需要在配置好之后点击构建，便可以实现自动化流程。构建过程中完全不需要人工操作，真正实现了解放双手，最后只需要关注构建是否成功。</p>
+<h2 id="二、配置jenkins发布"><a href="#二、配置jenkins发布" class="headerlink" title="二、配置jenkins发布"></a>二、配置jenkins发布</h2><p>   </p><h4>1、创建一个maven的项目</h4><br>   <img src="/2018/10/03/jenkins发布一个项目/step01.png" alt=""><br>   创建完成后点击保存，之后会进入构建配置界面<p></p>
+<p>   </p><h4>2、配置General</h4><br>   描述可随意填写内容，然后在下面的选项中我选择 “丢弃旧的构建”，构建天数和个数根据自己的需求填写<br>   <img src="/2018/10/03/jenkins发布一个项目/step02.png" alt=""><p></p>
+<p>   </p><h4>3、配置源码管理</h4><br>   <img src="/2018/10/03/jenkins发布一个项目/step03.png" alt=""><br>   源码管理我这里使用的是git，远程库为码云。Repository URL 注意填写的是https的格式，如果填写ssh的方式可能会报错提示找不到仓库<p></p>
+<p>   </p><h4>4、触发器和构建环境</h4><br>   <img src="/2018/10/03/jenkins发布一个项目/step04.png" alt=""><br>   这里没有使用到，可根据个人需求填写<p></p>
+<p>   </p><h4>5、Pre Steps和Build</h4><br>   <img src="/2018/10/03/jenkins发布一个项目/step05.png" alt=""><br>   Pre Steps这里没有用到，说一下Build这里。看旁边的提示可以知道这里配置的是maven的根目录下的pom.xml，下面就是构建时需要执行的maven命令，选填。<p></p>
+<p>   </p><h4>6、Post Steps</h4><br>   <img src="/2018/10/03/jenkins发布一个项目/step06.png" alt=""><br>   这里写的是构建中要执行的shell脚本，jenkins就是通过执行这些shell脚本实现自动部署和发布的。<br>   其中不管是执行构建的脚本还是服务器上的启动脚本都需要自己编写。<p></p>
+<p>   </p><h4>7、构建设置和构建后操作</h4><br>   <img src="/2018/10/03/jenkins发布一个项目/step07.png" alt=""><br>   主要设置就是填写一个邮件地址，就是构建完成后需要通知到的邮箱。<br>   构建后操作根据需求添加。<p></p>
+<h2 id="三、执行构建和查看输出"><a href="#三、执行构建和查看输出" class="headerlink" title="三、执行构建和查看输出"></a>三、执行构建和查看输出</h2><p>   配置完毕保存后会回到项目的主界面，点击左边的立即构建，jenkins便会开始执行自动化构建的过程。<br>   <img src="/2018/10/03/jenkins发布一个项目/step08.png" alt=""></p>
+<p>   开始构建后点击构建的工程，然后查看控制台输出的信息便可以看到构建的过程。至此，一个项目的构建就完成了<br>   <img src="/2018/10/03/jenkins发布一个项目/step09.png" alt=""></p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
@@ -187,16 +231,75 @@
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/03/jenkins发布一个项目/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/10/03/jenkins发布一个项目/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+  
+    <a href="/2018/09/22/linux-instruction/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">linux 命令小记</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -216,236 +319,14 @@
 
 
 
-
   
-    <article id="post-linux-instruction" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/22/linux-instruction/">linux 命令小记</a>
-    </h1>
   
 
-        
-        <a href="/2018/09/22/linux-instruction/" class="archive-article-date">
-  	<time datetime="2018-09-22T12:43:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/2018/09/22/linux-instruction/linux.png" alt=""></p>
-        
-          <a class="article-more-a" href="/2018/09/22/linux-instruction/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">学习小记</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/22/linux-instruction/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-server-configuration-of-jenkins" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/09/22/server-configuration-of-jenkins/">使用阿里云服务器配置Jenkins小记</a>
-    </h1>
   
 
-        
-        <a href="/2018/09/22/server-configuration-of-jenkins/" class="archive-article-date">
-  	<time datetime="2018-09-22T08:23:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/2018/09/22/server-configuration-of-jenkins/jenkins3.jpg" alt=""></p>
-        
-          <a class="article-more-a" href="/2018/09/22/server-configuration-of-jenkins/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">jenkins系列</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/09/22/server-configuration-of-jenkins/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-my-first-blog" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/13/my-first-blog/">博客搭成小记</a>
-    </h1>
   
 
-        
-        <a href="/2018/07/13/my-first-blog/" class="archive-article-date">
-  	<time datetime="2018-07-13T06:37:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="/2018/07/13/my-first-blog/p1.jpg" alt=""></p>
-        
-          <a class="article-more-a" href="/2018/07/13/my-first-blog/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">闲谈</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/07/13/my-first-blog/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -468,8 +349,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
