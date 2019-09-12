@@ -6,15 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: 瞎搞 | Oc204</title>
+  <title>迟来的微信公众号 | Oc204</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Oc204">
-<meta property="og:url" content="http://yoursite.com/tags/瞎搞/index.html">
+  <meta name="description" content="微信公众号开发入门，记录一下学习的过程和心得。">
+<meta name="keywords" content="微信公众号">
+<meta property="og:type" content="article">
+<meta property="og:title" content="迟来的微信公众号">
+<meta property="og:url" content="http://yoursite.com/2019/09/12/迟来的微信公众号/index.html">
 <meta property="og:site_name" content="Oc204">
+<meta property="og:description" content="微信公众号开发入门，记录一下学习的过程和心得。">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/迟来的微信公众号/index.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/迟来的微信公众号/natapp.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/迟来的微信公众号/natapp_cmd.png">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/迟来的微信公众号/微信校验码参数.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/09/12/迟来的微信公众号/natapp管控台.png">
+<meta property="og:updated_time" content="2019-09-12T03:23:00.007Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Oc204">
+<meta name="twitter:title" content="迟来的微信公众号">
+<meta name="twitter:description" content="微信公众号开发入门，记录一下学习的过程和心得。">
+<meta name="twitter:image" content="http://yoursite.com/2019/09/12/迟来的微信公众号/index.png">
   
     <link rel="alternative" href="/atom.xml" title="Oc204" type="application/atom+xml">
   
@@ -140,60 +151,248 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-迟来的微信公众号" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/28/A-way-about-how-to-register-Google-account/" class="archive-article-date">
-  	<time datetime="2019-03-28T04:48:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-28</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/28/A-way-about-how-to-register-Google-account/">A way about how to register Google account</a>
+    <h1 class="article-title" itemprop="name">
+      迟来的微信公众号
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2019/09/12/迟来的微信公众号/" class="archive-article-date">
+  	<time datetime="2019-09-12T01:52:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2019/09/12/迟来的微信公众号/index.png" alt=""></p>
+<p>微信公众号开发入门，记录一下学习的过程和心得。</p>
+<a id="more"></a>
+<h2 id="开发准备"><a href="#开发准备" class="headerlink" title="开发准备"></a>开发准备</h2><p>​    <font face="楷体" size="4"></font></p>
+<p>​    首先说明一下，微信公众号分为服务号、订阅号、企业号，一般个人就只能申请到订阅号，但是订阅号是基本没有什么开发权限的，但是我们可以使用微信的测试号来进行开发。测试号具备所有微信提供的开发功能权限。</p>
+<p>​    因此在开发之前，你需要先去公众号平台申请一个账号，详细请看微信的官网公告说明。</p>
+<p>​    </p>
+<hr>
+<h2 id="一、接入微信公众号"><a href="#一、接入微信公众号" class="headerlink" title="一、接入微信公众号"></a>一、接入微信公众号</h2><h4>1、获取AppID和AppSecret</h4>
+
+<p>进入你的微信公众号，进入底部，有一个基本配置选项，在里面可以查看到这两个字符串，AppSecret记得保存好</p>
+<h4>2、我们需要一个内网穿透工具</h4>
+
+<p>由于我们需要在本地进行测试，但是微信服务器需要能够在外网访问到本地的服务，因此我们可以去注册一个natapp，个人可以免费试用。</p>
+<p>注册完成之后，我们需要根据对应的版本下载一个客户端到本地，我是windows环境，直接启动应用natapp.exe，进入命令行界面。此时，我们需要在natapp上购买一个隧道，当然，这是免费的。购买成功之后，我们会得到一个隧道，像这样</p>
+<p><img src="/2019/09/12/迟来的微信公众号/natapp.png" alt=""></p>
+<p>我们需要这个叫authtoken的参数，在我们的本地的命令行界面中输入<code>natapp -authtoken 你的authtoken</code></p>
+<p>之后可以看到以下界面，就说明你已经执行成功，可以通过这个url从外网访问到本地</p>
+<p><img src="/2019/09/12/迟来的微信公众号/natapp_cmd.png" alt=""></p>
+<p>来到微信之后，需要进行验证，首先需要设置一个token，用于本地和微信的服务器进行校验比对的一个东西。</p>
+<p>之后需要填写配置，讲内网穿透获取的地址复制到微信公众号上的地址栏，验证成功，完毕。</p>
+<h4>3、校验微信签名</h4>
+
+<p>接入公众号的第一步，首先需要校验微信签名，校验成功之后，我们才能够进行下一步行动。</p>
+<p>当我们访问到微信公众号之后，微信的服务器将发送一个get请求给我们，参数格式如下</p>
+<p><img src="/2019/09/12/迟来的微信公众号/微信校验码参数.jpg" alt=""></p>
+<p>得到请求后，我们需要做三步:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 将token、timestamp、nonce三个参数进行字典序排序</span><br><span class="line">2. 将三个参数字符串拼接成一个字符串进行sha1加密 (可逆加密解密函数)</span><br><span class="line">3. 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信</span><br></pre></td></tr></table></figure>
+<p>签名校验成功后，说明我们已经可以与公众号正常通信了。</p>
+<p>代码不进行演示，主要说明原理。</p>
+<h2 id="二、获取ACCESS-TOKEN"><a href="#二、获取ACCESS-TOKEN" class="headerlink" title="二、获取ACCESS_TOKEN"></a>二、获取ACCESS_TOKEN</h2><p>access_token是一个很重要的东西，基本上每调用一个微信接口，我们都需要它。</p>
+<h4>1、ACCESS_TOKEN是什么？</h4>
+
+<p>access_token是公众号的全局唯一接口调用凭据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。</p>
+<p><strong>总结以上说明，access_token需要做到以下两点：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1.因为access_token有2个小时的时效性，要有一个机制保证最长2个小时重新获取一次。</span><br><span class="line"></span><br><span class="line">2.因为接口调用上限每天2000次，所以不能调用太频繁。</span><br></pre></td></tr></table></figure>
+<p>1.因为access_token有2个小时的时效性，要有一个机制保证最长2个小时重新获取一次。</p>
+<p>2.因为接口调用上限每天2000次，所以不能调用太频繁。</p>
+<h4>2、如何获取ACCESS_TOKEN？</h4>
+
+<p>我们需要两个参数，就是之前提到的APPID和APPSECRET，通过在给定的URL中放置我们特定的参数，然后使用GET请求发送给微信服务器，我们就可以获取到ACCESS_TOKEN。</p>
+<p><strong>接口调用请求说明</strong></p>
+<p>1、https请求方式: GET<br>2、<a href="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=APPID&amp;secret=APPSECRET" target="_blank" rel="noopener">https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;appid=APPID&amp;secret=APPSECRET</a></p>
+<p><strong>参数说明</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>是否必须</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>grant_type</td>
+<td>是</td>
+<td>获取access_token填写client_credential</td>
+</tr>
+<tr>
+<td>appid</td>
+<td>是</td>
+<td>第三方用户唯一凭证</td>
+</tr>
+<tr>
+<td>secret</td>
+<td>是</td>
+<td>第三方用户唯一凭证密钥，即appsecret</td>
+</tr>
+</tbody>
+</table>
+<p><strong>微信返回信息说明</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;access_token&quot;:&quot;ACCESS_TOKEN&quot;,&quot;expires_in&quot;:7200&#125;</span><br></pre></td></tr></table></figure>
+<p>获取失败示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;errcode&quot;:40013,&quot;errmsg&quot;:&quot;invalid appid&quot;&#125;</span><br></pre></td></tr></table></figure>
+<p>errcode可以在开发者文档中进行查询，进而分析失败原因。</p>
+<h2 id="三、如何回复用户消息"><a href="#三、如何回复用户消息" class="headerlink" title="三、如何回复用户消息"></a>三、如何回复用户消息</h2><p>思路：</p>
+<p>1、获取用户回复的消息类型，通过返回的xml模板中的MsgType进行区分，不同的消息类型的xml格式是不相同的，具体可以在开发者文档中看到，接收用户消息使用的是POST请求，在POST请求处理即可</p>
+<p>2、根据消息类型，进行xml消息格式构造。因为微信公众号已经给好了消息模板，所以直接根据模板，返回对应信息就行。注意的是，发送消息时，ToUserName和FromUserName要反过来，因为之前是用户给我发消息，而现在是我给用户发消息</p>
+<p>3、消息发送除了文本消息以外，返回其他的消息时，例如图片、音频，都需要一个mediaId，详情请自行百度，本处不进行具体说明</p>
+<p><strong>其次我们还可以通过这个本地url实时监控我们与微信通信的结果，这是natapp的一个后台监控，返回的消息都可以看到，非常方便</strong></p>
+<p><a href="&quot;http://localhost:4040/http/in&quot;">natapp管控台</a></p>
+<p><img src="/2019/09/12/迟来的微信公众号/natapp管控台.png" alt=""></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">瞎搞</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">微信公众号</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/09/12/迟来的微信公众号/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/03/28/A-way-about-how-to-register-Google-account/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">A way about how to register Google account</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -216,9 +415,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
