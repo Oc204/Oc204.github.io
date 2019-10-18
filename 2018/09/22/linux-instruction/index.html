@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Oc204">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2018/09/22/linux-instruction/linux.png">
-<meta property="og:updated_time" content="2019-10-15T13:16:02.220Z">
+<meta property="og:updated_time" content="2019-10-18T07:42:32.700Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 命令小记">
 <meta name="twitter:image" content="http://yoursite.com/2018/09/22/linux-instruction/linux.png">
@@ -185,7 +185,13 @@ find / -iname [应用关键词,如 mysql] //查找所有带该关键词的相关
 find / iname [应用关键词,如 mysql] | xargs -n 1000 rm -rf //把所有查找到的相关结果删除，rm每次接受参数有限，所有1000表示每次传1000个参数给它
 </code></pre><p><br></p><h3>linux中.sh文件提示权限不够和无效问题</h3><p></p>
 <pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">step_01: vi filename.sh 进入文件编辑模式</span><br><span class="line">step_02: 进入编辑模式输入命令 set ff 查看.sh文件的格式，如果出现文件格式为dos则需要修格式，输入 set fileformat=unix</span><br><span class="line">         因为linux系统下只认unix格式的.sh。修改完毕，保存返回。以此可再次查看格式是否修改成功</span><br><span class="line">step_03: 在.sh文件的父目录下执行命令 chmod u+x filename.sh 给予.sh文件权限</span><br></pre></td></tr></table></figure>
-</code></pre><h3>vim 的基本命令</h3>
+</code></pre><h3 id="坑比MYSQL"><a href="#坑比MYSQL" class="headerlink" title="坑比MYSQL"></a>坑比MYSQL</h3><h4 id="修改密码"><a href="#修改密码" class="headerlink" title="修改密码"></a>修改密码</h4><p>进入mysql命令行界面</p>
+<h4 id="允许任何root用户远程访问数据库"><a href="#允许任何root用户远程访问数据库" class="headerlink" title="允许任何root用户远程访问数据库"></a>允许任何root用户远程访问数据库</h4><p>1、登录mysql mysql -u root -p，输入密码进入mysql命令界面</p>
+<p>2、在mysql命令界面执行 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;grant all privileges on *.* to root@&apos;%&apos; identified by &apos;A123456&apos;;</span><br><span class="line">mysql&gt; flush privileges;</span><br><span class="line"></span><br><span class="line">//表示允许任何远程为root的用户名，密码为A123456的用户登录本数据库，flush命令表示刷新,重启数据库也行</span><br></pre></td></tr></table></figure>
+<p>由于目前使用的是mariadb，因为mysql出了问题，目前的水平还无法解决，又不想再重装服务器了，所以就。。</p>
+<p>然后之前使用的mysql server的命令，都需要改成mariadb，（T–T）</p>
+<h3>vim 的基本命令</h3>
 
 <p>   <code>vim [filename]        //对可编辑文件&#39;filename&#39;进行编辑</code></p>
 <p>   进入vim编辑模式后，输入i进入编辑模式，左下方会有 ‘INSERT’ 关键字提示;<br>   编辑完成后，按 ‘esc’ 退出编辑模式，然后输入 ‘:’ 进入保存选项，输入命令:<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> q!                //表示不保存修改并提交</span><br><span class="line">wq                 //表示保存修稿并提交</span><br></pre></td></tr></table></figure></p>
@@ -433,10 +439,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">jenkins系列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">学习小记</a>
               </li>
              
@@ -445,11 +447,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring boot</a>
+                <a href="javascript:void(0)" class="js-tag color5">jenkins系列</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">微信公众号</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">spring boot</a>
               </li>
             
             <div class="clearfix"></div>
