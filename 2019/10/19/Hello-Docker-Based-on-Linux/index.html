@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2019/10 | Oc204</title>
+  <title>Hello Docker!(Based on Linux) | Oc204</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Oc204">
-<meta property="og:url" content="http://yoursite.com/archives/2019/10/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="Hello Docker!(Based on Linux)">
+<meta property="og:url" content="http://yoursite.com/2019/10/19/Hello-Docker-Based-on-Linux/index.html">
 <meta property="og:site_name" content="Oc204">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2019/10/19/Hello-Docker-Based-on-Linux/head.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/10/19/Hello-Docker-Based-on-Linux/p1.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/10/19/Hello-Docker-Based-on-Linux/p2.jpg">
+<meta property="og:updated_time" content="2019-10-22T02:27:27.436Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Oc204">
+<meta name="twitter:title" content="Hello Docker!(Based on Linux)">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/19/Hello-Docker-Based-on-Linux/head.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Oc204" type="application/atom+xml">
   
@@ -140,76 +145,186 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-Hello-Docker-Based-on-Linux" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      Hello Docker!(Based on Linux)
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/10/19/Hello-Docker-Based-on-Linux/" class="archive-article-date">
+
+        
+        <a href="/2019/10/19/Hello-Docker-Based-on-Linux/" class="archive-article-date">
   	<time datetime="2019-10-19T08:45:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-19</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/10/19/Hello-Docker-Based-on-Linux/">Hello Docker!(Based on Linux)</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/2019/10/19/Hello-Docker-Based-on-Linux/head.jpg" alt=""></p>
+<a id="more"></a>
+<h2 id="Docker是什么？"><a href="#Docker是什么？" class="headerlink" title="Docker是什么？"></a>Docker是什么？</h2><p>百度上是这样解释的：Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的容器中,然后发布到任何流行的<a href="https://baike.baidu.com/item/Linux" target="_blank" rel="noopener">Linux</a>机器上,也可以实现虚拟化,容器是完全使用沙箱机制,相互之间不会有任何接口。</p>
+<p>以我目前的理解，我觉得用”寄生虫“来形容Docker更为合适。那什么是宿主机？宿主机就是我们一台普通的机器，比如一台阿里云服务器，一台个人电脑，就可以称为一个宿主机。也正是因为宿主机这个概念，Docker依赖于宿主机建立，但Docker的内部的容器却又是完全对外隔离的，也正是一个“沙箱”的概念。而且一台宿主机可以部署很多个Docker，因此可以有很多不同的容器，也就是很多个“寄生虫”，因此，就实现了完全虚拟化。</p>
+<h2 id="如何使用Docker？"><a href="#如何使用Docker？" class="headerlink" title="如何使用Docker？"></a>如何使用Docker？</h2><p>建议在Linux环境下使用Docker,Windows环境不展开描述。此处将从零开始演示如何通过jenkins+git+docker集成一个java的maven项目。</p>
+<h3 id="1安装Docker"><a href="#1安装Docker" class="headerlink" title="1安装Docker"></a>1安装Docker</h3><p>移除旧的版本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum remove docker</span><br></pre></td></tr></table></figure></p>
+<p>安装一些必要的系统工具：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br></pre></td></tr></table></figure>
+<p>添加软件源信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<p>更新 yum 缓存：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum makecache fast</span><br></pre></td></tr></table></figure></p>
+<p>安装 Docker-ce：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum -y install docker-ce</span><br></pre></td></tr></table></figure>
+<p>启动 Docker 后台服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start docker</span><br></pre></td></tr></table></figure>
+<p>测试运行 hello-world</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@runoob ~]# docker run hello-world</span><br></pre></td></tr></table></figure>
+<h3 id="2-Docker安装JDK"><a href="#2-Docker安装JDK" class="headerlink" title="2.Docker安装JDK"></a>2.Docker安装JDK</h3><p>docker安装jdk很简单，直接运行命令:docker pull java:8    //表示安装jdk1.8</p>
+<p>安装其他镜像也一样，docker命令安装镜像如果不指定版本号的话，将默认安装最新版</p>
+<h3 id="3-使用jenkins打包github项目并发布成docker镜像"><a href="#3-使用jenkins打包github项目并发布成docker镜像" class="headerlink" title="3.使用jenkins打包github项目并发布成docker镜像"></a>3.使用jenkins打包github项目并发布成docker镜像</h3><h4 id="3-1首先编写一个HelloWorld的springboot项目，项目内包含Dockerfile"><a href="#3-1首先编写一个HelloWorld的springboot项目，项目内包含Dockerfile" class="headerlink" title="3.1首先编写一个HelloWorld的springboot项目，项目内包含Dockerfile"></a>3.1首先编写一个HelloWorld的springboot项目，项目内包含Dockerfile</h4><p>什么是Dockerfile？Dockerfile是Docker的一个特殊的脚本工具，通过在这个文本文档内编写docker命令，然后使用Docker读取运行该文本，就可以实现构建镜像的操作。</p>
+<p>目前展示我的一个简单的Dockerfile,并做一些简单的解释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FROM java:8  //指的是关联jdk1.8的镜像</span><br><span class="line">VOLUME /tmp   //将tmp目录并持久化到Docker数据文件夹，因为Spring Boot使用的内嵌Tomcat容器默认使用/tmp作为工作目录</span><br><span class="line">ADD docker-test-0.0.1-SNAPSHOT.jar docker-test.jar //将项目添加为docker-test.jar,项目名称一定要与pom中的名称一致，或者可以观察打包完成后的包名</span><br><span class="line">RUN sh -c &apos;touch /docker-test.jar&apos; //拷贝jar到容器当中</span><br><span class="line">ENV JAVA_OPTS=&quot;&quot;    //指定jvm参数</span><br><span class="line">ENTRYPOINT [&quot;java&quot;,&quot;-Djava.security.egd=file:/dev/./urandom&quot;,&quot;-jar&quot;,&quot;/docker-test.jar&quot;]</span><br><span class="line">//ENTRYPOINT 执行项目 app.jar。为了缩短 Tomcat 启动时间，添加一个系统属性指向 “/dev/urandom” 作为 Entropy Source</span><br></pre></td></tr></table></figure>
+<h4 id="3-2使用jenkins集成构建"><a href="#3-2使用jenkins集成构建" class="headerlink" title="3.2使用jenkins集成构建"></a>3.2使用jenkins集成构建</h4><p>jenkins主要说一下触发器和编写脚本这里。</p>
+<p>首先触发器先看下面的配置</p>
+<p><img src="/2019/10/19/Hello-Docker-Based-on-Linux/p1.jpg" alt=""></p>
+<p>选择自动触发构建，下面表示轮询的时间，每隔5分钟查询一次是否有新的提交，如果有新的提交则自动构建。</p>
+<p>然后是启动过程中的脚本</p>
+<p><img src="/2019/10/19/Hello-Docker-Based-on-Linux/p2.jpg" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">##判断mytestdemo中是否已经存在jar</span><br><span class="line">if [  -f &quot;/usr/local/mytestdemo/docker-test-0.0.1-SNAPSHOT.jar&quot; ];then</span><br><span class="line">rm -rf /usr/local/mytestdemo/docker-test-0.0.1-SNAPSHOT.jar</span><br><span class="line">else</span><br><span class="line">echo &quot;文件不存在&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">if [ -f &quot;/usr/local/mytestdemo/Dockerfile&quot; ];then</span><br><span class="line">rm -rf /usr/local/mytestdemo/Dockerfile</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">##移动jar到mytestdemo</span><br><span class="line">cp -r -f $&#123;WORKSPACE&#125;/docker-test/target/docker-test-0.0.1-SNAPSHOT.jar /usr/local/mytestdemo</span><br><span class="line">cp -r -f $&#123;WORKSPACE&#125;/docker-test/src/main/resources/Dockerfile /usr/local/mytestdemo</span><br><span class="line">##判断docker中是否存在运行容器和镜像</span><br><span class="line">imagesid=`docker images|grep -i docker-test|awk &apos;&#123;print $3&#125;&apos;`</span><br><span class="line">if [ -n &quot;$imagesid&quot; ];then</span><br><span class="line">##docker stop $imagesid</span><br><span class="line">docker rmi -f docker-test</span><br><span class="line">else</span><br><span class="line">echo &quot;镜像不存在&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">##启动镜像</span><br><span class="line">cd /usr/local/mytestdemo</span><br><span class="line">docker build -t docker-test . </span><br><span class="line">docker run -d -p 8081:8082 docker-test</span><br><span class="line">echo &quot;镜像启动完毕&quot;</span><br></pre></td></tr></table></figure>
+<p>脚本编写还不熟练，所以写的也比较冗余，因此只能从比较基础的思路编写，熟练脚本的的话可以考虑更加高级一点的写法。<strong>其中，jenkins构建的项目空间不指定的话，它会将当前项目构建到默认的workspace目录下，最好还是自己指定一下构建目录。</strong></p>
+<p>至此，jenkins部分的工作完毕。然后我们只要修改项目的代码，提交之后，代码库发生变更，jenkins便会自动构建，省去了每一次提交都要重复所有步骤的麻烦。构建成功之后，可以到服务器上面查看docker中镜像的运行状态。</p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/10/19/Hello-Docker-Based-on-Linux/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/10/15/计算机网络学习笔记/" class="archive-article-date">
-  	<time datetime="2019-10-15T09:50:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-15</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/10/15/计算机网络学习笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">&#39;计算机网络学习笔记&#39;</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/10/15/计算机网络学习笔记/">&#39;计算机网络学习笔记&#39;</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -232,8 +347,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
