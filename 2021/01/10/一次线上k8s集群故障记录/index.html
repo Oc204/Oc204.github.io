@@ -6,15 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | Oc204</title>
+  <title>一次线上k8s集群故障记录 | Oc204</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Oc204">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="一次线上k8s集群故障记录">
+<meta property="og:url" content="http://yoursite.com/2021/01/10/一次线上k8s集群故障记录/index.html">
 <meta property="og:site_name" content="Oc204">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2021/01/10/一次线上k8s集群故障记录/head.jpg">
+<meta property="og:updated_time" content="2021-01-20T14:24:41.320Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Oc204">
+<meta name="twitter:title" content="一次线上k8s集群故障记录">
+<meta name="twitter:image" content="http://yoursite.com/2021/01/10/一次线上k8s集群故障记录/head.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Oc204" type="application/atom+xml">
   
@@ -140,360 +143,167 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-一次线上k8s集群故障记录" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      一次线上k8s集群故障记录
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/10/一次线上k8s集群故障记录/" class="archive-article-date">
+
+        
+        <a href="/2021/01/10/一次线上k8s集群故障记录/" class="archive-article-date">
   	<time datetime="2021-01-10T13:04:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-10</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/10/一次线上k8s集群故障记录/">一次线上k8s集群故障记录</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
+        
+      </header>
     
-    
+    <div class="article-entry" itemprop="articleBody">
       
-        </div></section>
+        <p><img src="/2021/01/10/一次线上k8s集群故障记录/head.jpg" alt=""></p>
+<a id="more"></a>
+<p>最近k8s master节点频繁异常，表现为k8s darshboard无法访问，应用node、pod运行状态均正常，但是无法通过ingress配置的子域名访问应用，比较奇怪。</p>
+<h3 id="1-排查是否是ingress异常"><a href="#1-排查是否是ingress异常" class="headerlink" title="1 排查是否是ingress异常"></a>1 排查是否是ingress异常</h3><p>查看ingress pod的状态和运行日志，均表现正常，排除ingress问题</p>
+<h3 id="2-排查其他系统pod和service"><a href="#2-排查其他系统pod和service" class="headerlink" title="2 排查其他系统pod和service"></a>2 排查其他系统pod和service</h3><p>执行<code>kubectl get pods -A</code>，主要观察系统pod。目前是一个集群4个节点，查看发现其中master节点的flannel pod 处于termina状态，所以这就是ingress子域名访问不了应用的原因。<br>主节点的网络组件异常，导致应用无法和外部网络连接</p>
+<h3 id="3-查看flannel状态"><a href="#3-查看flannel状态" class="headerlink" title="3 查看flannel状态"></a>3 查看flannel状态</h3><p>执行<code>kubectl describe pods</code> 命令，信息提示 low resources，组件得不到足够的资源无法启动</p>
+<h3 id="4-查看master节点的kubelet状态"><a href="#4-查看master节点的kubelet状态" class="headerlink" title="4 查看master节点的kubelet状态"></a>4 查看master节点的kubelet状态</h3><p>通过<code>systemctl status kubelet</code> 以及 <a href="https://www.cnblogs.com/effortsing/p/10307830.html" target="_blank" rel="noopener">journalctl 命令</a>查看到k8s运行输出的日志，发现一直在报错，提示 ImageGC 异常，应用释放失败，需要强制执行（–force）才能释放需要被回收的镜像资源。</p>
+<h3 id="5-查看docker镜像信息"><a href="#5-查看docker镜像信息" class="headerlink" title="5 查看docker镜像信息"></a>5 查看docker镜像信息</h3><p>执行docker images\docker ps ，发现存在一些 tag、name均为<none>的镜像，执行docker rmi删除镜像时，提示镜像被已经停止的容器引用，此时也解释了为什么k8s ImageGC异常的问题。<br>使用命令 docker rmi –force强制删除为<none>的镜像，再查看k8s日志，已经不报错了，再访问darshboard也能正常访问了。这一篇文章解释了<none>镜像出现的原因<a href="https://blog.csdn.net/boling_cavalry/article/details/90727359" target="_blank" rel="noopener">Docker镜像列表中的none:none是什么</a></none></none></none></p>
+<h3 id="6-排查low-resource的原因"><a href="#6-排查low-resource的原因" class="headerlink" title="6 排查low resource的原因"></a>6 排查low resource的原因</h3><p>首先查看磁盘占用，目前磁盘占用为80%多，结合最近有些应用在重新发布时会出现<strong>DiskPressure</strong>的情况，在网上看了一下发现当系统磁盘占用超过80%时K8s就会出现<strong>DiskPressure</strong>的警告，<br>因为现在应用的几乎是成倍增长，虽然之前也已经扩容了一次，但是磁盘资源相对来说还是比较紧缺。所以只要一直发布新应用，磁盘迟早也会被占满，虽然说k8s是有GC机制。</p>
+<h3 id="7-k8s-ImageGC-周期"><a href="#7-k8s-ImageGC-周期" class="headerlink" title="7 k8s ImageGC 周期"></a>7 k8s ImageGC 周期</h3><p>查看文档发现，k8s ImageGC是五分钟对image执行一次，它会对哪些已经不被使用的资源进行回收。所以也解释了为什么应用刚刚能正常访问一下就又崩了的问题</p>
+<h3 id="8-最终解决方案"><a href="#8-最终解决方案" class="headerlink" title="8 最终解决方案"></a>8 最终解决方案</h3><p>因为机器上安装了一些其他的软件应用，也是比较占用硬盘资源，所以把Jenkins的数据目录迁移到了新的数据盘上，然后一下子就腾出了50%的系统盘空间，所以至少在半年以内是不会再出现<br><strong>low resource</strong> 和 <strong>DiskPressure</strong>的问题了。问题虽然解决了，但还是治标不治本。</p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><p>1、构建环境和应用运行环境都在一台机器中进行，硬盘空间容易用得快，硬盘一旦使用率过高就容易出现各种奇葩问题（硬盘不贵，能用钱解决的就不要瞎折腾了。。。）<br>2、应用在发布新镜像时做好版本号标签更新，不然就会出现<none>的镜像，<none>镜像是需要强制删除才能删掉<br>3、根据服务器实际情况，修改k8s相关配置，比如磁盘最大允许使用多少等</none></none></p>
+<p>下一节说说 jenkins怎么优化和迁移</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/12/27/MySQL-server-has-gone-away错误的解决办法/" class="archive-article-date">
-  	<time datetime="2019-12-27T14:59:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-12-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/12/27/MySQL-server-has-gone-away错误的解决办法/">MySQL server has gone away错误的解决办法</a>
-    </h1>
-  
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/01/10/一次线上k8s集群故障记录/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/10/29/Hello-Dubbo-Exception/" class="archive-article-date">
-  	<time datetime="2019-10-29T02:30:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-29</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2019/12/27/MySQL-server-has-gone-away错误的解决办法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MySQL server has gone away错误的解决办法</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/10/29/Hello-Dubbo-Exception/">Hello Dubbo Exception</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">dubbo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/10/29/Hello-Dubbo/" class="archive-article-date">
-  	<time datetime="2019-10-29T02:29:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-29</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/10/29/Hello-Dubbo/">Hello Dubbo</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">dubbo</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/10/25/My-Error-Notes/" class="archive-article-date">
-  	<time datetime="2019-10-25T08:59:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/10/25/My-Error-Notes/">My Error Notes</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/10/19/Hello-Docker-Based-on-Linux/" class="archive-article-date">
-  	<time datetime="2019-10-19T08:45:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/10/19/Hello-Docker-Based-on-Linux/">Hello Docker!(Based on Linux)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/10/15/计算机网络学习笔记/" class="archive-article-date">
-  	<time datetime="2019-10-15T09:50:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/10/15/计算机网络学习笔记/">&#39;计算机网络学习笔记&#39;</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/09/12/迟来的微信公众号/" class="archive-article-date">
-  	<time datetime="2019-09-12T01:52:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-12</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/09/12/迟来的微信公众号/">迟来的微信公众号</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">微信公众号</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/28/A-way-about-how-to-register-Google-account/" class="archive-article-date">
-  	<time datetime="2019-03-28T04:48:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/28/A-way-about-how-to-register-Google-account/">A way about how to register Google account</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">瞎搞</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/03/20/spring-boot-learning/" class="archive-article-date">
-  	<time datetime="2019-03-20T06:07:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-03-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/03/20/spring-boot-learning/">spring boot learning小记</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">spring boot</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-    </nav>
   
 
 
@@ -517,8 +327,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
