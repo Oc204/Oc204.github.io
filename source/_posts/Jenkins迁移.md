@@ -1,7 +1,7 @@
 ---
 title: Jenkins迁移
 date: 2021-01-20 22:37:31
-tags:
+tags: jenkins
 ---
 
 ![](/Jenkins迁移/head.jpg)
